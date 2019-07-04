@@ -1,97 +1,109 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, {Fragment} from 'react';
+import React, { Component } from 'react';
+import { View, Image, TouchableOpacity } from 'react-native';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+  createDrawerNavigator,
+  createStackNavigator,
+  createAppContainer,
+} from 'react-navigation';
+import { Provider } from 'react-redux';
+ 
+import CryptoTradingPairs from './pages/CryptoTradingPairs';
+import Favorites from './pages/Favorites';
+import TopMajorGainer from './pages/TopMajorGainer';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import theme from './styles/theme.style';
+import configureStore from './store/configureStore';
 
-const App = () => {
-  return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Fragment>
-  );
-};
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+class NavigationDrawerStructure extends Component {
+  toggleDrawer = () => {
+    this.props.navigationProps.toggleDrawer();
+  };
+  render() {
+    return (
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
+          <Image
+            source={require('./assets/drawer.png')}
+            style={{ width: 25, height: 25, marginLeft: 10 }}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+ 
+const FirstActivity_StackNavigator = createStackNavigator({
+  First: {
+    screen: CryptoTradingPairs,
+    navigationOptions: ({ navigation }) => ({
+      title: 'All Trading Pairs',
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: theme.drawer.BACKGROUND_PRIMARY_COLOR,
+      },
+      headerTintColor: theme.drawer.TEXT_PRIMARY_COLOR,
+    }),
   },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
+});
+ 
+const Favorites_StackNavigator = createStackNavigator({
+  Second: {
+    screen: Favorites,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Favorite Trading Pairs',
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: theme.drawer.BACKGROUND_PRIMARY_COLOR,
+      },
+      headerTintColor: theme.drawer.TEXT_PRIMARY_COLOR,
+    }),
   },
 });
 
-export default App;
+const TopMajorGainer_StackNavigator = createStackNavigator({
+  Third: {
+    screen: TopMajorGainer,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Top Major Gainer 24h',
+      headerLeft: <NavigationDrawerStructure navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: theme.drawer.BACKGROUND_PRIMARY_COLOR,
+      },
+      headerTintColor: theme.drawer.TEXT_PRIMARY_COLOR,
+    }),
+  },
+});
+
+const DrawerNavigatorExample = createDrawerNavigator({
+  CryptoTradingPairs: {
+    screen: FirstActivity_StackNavigator,
+    navigationOptions: {
+      drawerLabel: 'All Trading Pairs',
+    },
+  },
+  Favorites: {
+    screen: Favorites_StackNavigator,
+    navigationOptions: {
+      drawerLabel: 'Favorite Trading Pairs',
+    },
+  },
+  TopMajorGainer: {
+    screen: TopMajorGainer_StackNavigator,
+    navigationOptions: {
+      drawerLabel: 'Top Major Gainer 24h',
+    },
+  },
+});
+
+let Navigation = createAppContainer(DrawerNavigatorExample);
+const store = configureStore();
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
+    );
+  }
+}
