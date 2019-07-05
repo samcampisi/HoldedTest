@@ -1,7 +1,9 @@
 import { TradingPairs } from '../actions/actionTypes';
+import { updateFavorites } from '../actions/tradingPairs.actions';
 
 const initialState = {
   tradingPairs: new Map(),
+  favorites: new Set(),
   loading: false,
   error: null,
   refreshing: false,
@@ -38,6 +40,29 @@ export default function app(state = initialState, action) {
         loading: false,
         refreshing: false,
       };
+    case TradingPairs.FETCH_FAVORITES_SUCCESS:
+      return {
+        ...state,
+        favorites: action.payload.favorites,
+      };
+    case TradingPairs.SAVE_TO_FAVORITES: {
+      const newFavorites = new Set(state.favorites);
+      newFavorites.add(action.payload);
+      updateFavorites(newFavorites);
+      return {
+        ...state,
+        favorites: newFavorites,
+      };
+    }
+    case TradingPairs.REMOVE_FROM_FAVORITES: {
+      const newFavorites = new Set(state.favorites);
+      newFavorites.delete(action.payload);
+      updateFavorites(newFavorites);
+      return {
+        ...state,
+        favorites: newFavorites,
+      };
+    }
     default:
       return state;
   }

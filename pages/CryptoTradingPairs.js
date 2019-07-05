@@ -17,7 +17,7 @@ import FavoriteButton from "../components/favoriteButton";
 
 class CryptoTradingPairs extends Component {
   static getDerivedStateFromProps(nextProps, prevState){
-    if(nextProps.tradingPairs !== prevState.data){
+    if (nextProps.tradingPairs !== prevState.data){
       return { data: nextProps.tradingPairs };
    }
    else return null;
@@ -31,11 +31,24 @@ class CryptoTradingPairs extends Component {
     };
 
     this.fetchTradingPairs();
+    this.fetchFavorites();
   }
 
   fetchTradingPairs = (refreshing = false) => {
     this.props.actions.fetchTradingPairs(refreshing);
   };
+
+  fetchFavorites = () => {
+    this.props.actions.fetchFavorites();
+  }
+
+  toggleFavorite = (item) => {
+    if (this.props.favorites.has(item.name)) {
+      this.props.actions.removeFromFavorites(item.name);
+    } else {
+      this.props.actions.saveToFavorites(item.name);
+    }
+  }
 
   renderItem = item => {
     return (
@@ -50,7 +63,7 @@ class CryptoTradingPairs extends Component {
       >
         <Text>{item.name}</Text>
         <Text>{item.price}</Text>
-        <FavoriteButton onPress={() => {}} />
+        <FavoriteButton onPress={() => { this.toggleFavorite(item); }} bright={this.props.favorites.has(item.name)} />
       </View>
     );
   };
@@ -108,7 +121,8 @@ const mapStateToProps = (state, props) => {
     loading: state.tradingPairs.loading,
     refreshing: state.tradingPairs.refreshing,
     error: state.tradingPairs.error,
-    tradingPairs: Array.from(state.tradingPairs.tradingPairs.values())
+    tradingPairs: Array.from(state.tradingPairs.tradingPairs.values()),
+    favorites: state.tradingPairs.favorites,
   };
 };
 
