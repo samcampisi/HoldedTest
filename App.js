@@ -93,6 +93,11 @@ const DrawerNavigatorExample = createDrawerNavigator({
       drawerLabel: 'Top Major Gainer 24h',
     },
   },
+}, {
+  contentOptions: {
+    activeTintColor: theme.drawer.BACKGROUND_PRIMARY_COLOR,
+  },
+  drawerBackgroundColor: theme.SEPARATOR_COLOR,
 });
 
 let Navigation = createAppContainer(DrawerNavigatorExample);

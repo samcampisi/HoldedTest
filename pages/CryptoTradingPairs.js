@@ -19,9 +19,9 @@ class CryptoTradingPairs extends Component {
   static getDerivedStateFromProps(nextProps, prevState){
     if (nextProps.tradingPairs !== prevState.data){
       return { data: nextProps.tradingPairs };
-   }
-   else return null;
- }
+    }
+    else return null;
+  }
 
   constructor(props) {
     super(props);
