@@ -1,6 +1,6 @@
 import Binance from 'binance-api-react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { TradingPairs } from '../actions/actionTypes';
-import { AsyncStorage } from "react-native";
 
 const client = Binance();
 
