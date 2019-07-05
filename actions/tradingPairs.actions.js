@@ -1,6 +1,6 @@
+import Binance from 'binance-api-react-native';
 import { TradingPairs } from '../actions/actionTypes';
 
-const Binance = require('binance-api-node').default;
 const client = Binance();
 
 export function fetchTradingPairs(refreshing = false) {
@@ -10,7 +10,8 @@ export function fetchTradingPairs(refreshing = false) {
       payload: { refreshing },
     });
     client.prices().then((res) => {
-      console.warn('res', res);
+      const list = Object.entries(res);
+      dispatch(fetchTradingPairsSuccess(list));
     }).catch((err) => {
       dispatch(fetchFailure(err));
     })

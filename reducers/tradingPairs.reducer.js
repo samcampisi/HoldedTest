@@ -1,7 +1,7 @@
 import { TradingPairs } from '../actions/actionTypes';
 
 const initialState = {
-  tradingPairs: [],
+  tradingPairs: new Map(),
   loading: false,
   error: null,
   refreshing: false,
@@ -16,13 +16,21 @@ export default function app(state = initialState, action) {
         loading: true,
         refreshing: action.payload.refreshing,
       };
-    case TradingPairs.FETCH_TRADING_PAIRS_SUCCESS:
+    case TradingPairs.FETCH_TRADING_PAIRS_SUCCESS: {
+      let newMap = new Map(state.tradingPairs);
+      if (action.payload.list) {
+        for (e of action.payload.list) {
+          newMap.set(e[0], { name: e[0], price: e[1] });
+        }
+      }
+
       return {
         ...state,
-        tradingPairs: action.payload.list,
+        tradingPairs: newMap,
         loading: false,
         refreshing: false,
       };
+    }
     case TradingPairs.FETCH_TRADING_PAIRS_FAILURE:
       return {
         ...state,

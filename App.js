@@ -24,7 +24,7 @@ class NavigationDrawerStructure extends Component {
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={require('./assets/drawer.png')}
-            style={{ width: 25, height: 25, marginLeft: 10 }}
+            style={{ width: 25, height: 25, marginLeft: 10, tintColor: '#FFFFFF' }}
           />
         </TouchableOpacity>
       </View>
