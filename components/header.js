@@ -12,7 +12,7 @@ class Header extends Component {
     return (
       <View style={styles.container}>
         {
-          this.props.titles.map(e => <Text style={styles.headerText}>{e}</Text>)
+          this.props.titles.map(e => <Text style={styles.headerText} key={e}>{e}</Text>)
         }
       </View>
     );

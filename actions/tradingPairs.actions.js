@@ -14,7 +14,7 @@ export function fetchTradingPairs(refreshing = false) {
       const list = Object.entries(res);
       dispatch(fetchTradingPairsSuccess(list));
     }).catch((err) => {
-      dispatch(fetchFailure(err));
+      dispatch(fetchFailure(err, TradingPairs.FETCH_TRADING_PAIRS_FAILURE));
     })
   };
 }
@@ -28,9 +28,9 @@ export function fetchTradingPairsSuccess(list) {
   };
 }
 
-export function fetchFailure(error) {
+export function fetchFailure(error, type) {
   return {
-    type: TradingPairs.FETCH_TRADING_PAIRS_FAILURE,
+    type,
     payload: {
       error
     },
@@ -78,3 +78,25 @@ export const removeFromFavorites = id => (dispatch) => {
     payload: id,
   });
 };
+
+export function fetchDailyStats() {
+  return (dispatch) => {
+    dispatch({
+      type: TradingPairs.FETCH_DAILY_STATS,
+    });
+    client.dailyStats().then((res) => {
+      dispatch(fetchDailyStatsSuccess(res));
+    }).catch((err) => {
+      dispatch(fetchFailure(err, TradingPairs.FETCH_DAILY_STATS_FAILURE));
+    })
+  };
+}
+
+export function fetchDailyStatsSuccess(list) {
+  return {
+    type: TradingPairs.FETCH_DAILY_STATS_SUCCESS,
+    payload: {
+      list,
+    },
+  };
+}

@@ -1,5 +1,5 @@
-import { TradingPairs } from '../actions/actionTypes';
-import { updateFavorites } from '../actions/tradingPairs.actions';
+import { TradingPairs } from "../actions/actionTypes";
+import { updateFavorites } from "../actions/tradingPairs.actions";
 
 const initialState = {
   tradingPairs: new Map(),
@@ -7,6 +7,7 @@ const initialState = {
   loading: false,
   error: null,
   refreshing: false,
+  topMajorGainer: null
 };
 
 export default function app(state = initialState, action) {
@@ -16,7 +17,7 @@ export default function app(state = initialState, action) {
         ...state,
         error: null,
         loading: true,
-        refreshing: action.payload.refreshing,
+        refreshing: action.payload.refreshing
       };
     case TradingPairs.FETCH_TRADING_PAIRS_SUCCESS: {
       let newMap = new Map(state.tradingPairs);
@@ -30,7 +31,7 @@ export default function app(state = initialState, action) {
         ...state,
         tradingPairs: newMap,
         loading: false,
-        refreshing: false,
+        refreshing: false
       };
     }
     case TradingPairs.FETCH_TRADING_PAIRS_FAILURE:
@@ -38,12 +39,12 @@ export default function app(state = initialState, action) {
         ...state,
         error: action.payload.error,
         loading: false,
-        refreshing: false,
+        refreshing: false
       };
     case TradingPairs.FETCH_FAVORITES_SUCCESS:
       return {
         ...state,
-        favorites: action.payload.favorites,
+        favorites: action.payload.favorites
       };
     case TradingPairs.SAVE_TO_FAVORITES: {
       const newFavorites = new Set(state.favorites);
@@ -51,7 +52,7 @@ export default function app(state = initialState, action) {
       updateFavorites(newFavorites);
       return {
         ...state,
-        favorites: newFavorites,
+        favorites: newFavorites
       };
     }
     case TradingPairs.REMOVE_FROM_FAVORITES: {
@@ -60,9 +61,33 @@ export default function app(state = initialState, action) {
       updateFavorites(newFavorites);
       return {
         ...state,
-        favorites: newFavorites,
+        favorites: newFavorites
       };
     }
+    case TradingPairs.FETCH_DAILY_STATS:
+      return {
+        ...state,
+        error: null,
+        loading: true
+      };
+    case TradingPairs.FETCH_DAILY_STATS_SUCCESS: {
+      const allGainers = action.payload.list;
+      const topMajorGainer = allGainers.reduce((prev, current) =>
+        parseFloat(prev.priceChange) > parseFloat(current.priceChange) ? prev : current
+      );
+
+      return {
+        ...state,
+        topMajorGainer,
+        loading: false
+      };
+    }
+    case TradingPairs.FETCH_DAILY_STATS_FAILURE:
+      return {
+        ...state,
+        error: action.payload.error,
+        loading: false
+      };
     default:
       return state;
   }
