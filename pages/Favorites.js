@@ -14,6 +14,7 @@ import * as tradingPairsActions from "../actions/tradingPairs.actions";
 import Header from "../components/header";
 import Separator from "../components/separator";
 import FavoriteButton from "../components/favoriteButton";
+import EmptyContent from "../components/emptyContent";
 
 class Favorites extends Component {
   static getDerivedStateFromProps(nextProps, prevState){
@@ -67,8 +68,10 @@ class Favorites extends Component {
           keyExtractor={item => item}
           ItemSeparatorComponent={() => <Separator />}
           ListHeaderComponent={
-            <Header titles={["TRADING PAIR", "VALUE", "FAVORITE"]} />
+            this.state.data.length && <Header titles={["TRADING PAIR", "VALUE", "FAVORITE"]} />
           }
+          ListEmptyComponent={<EmptyContent subtitle='Add something to your favorites on the All Trading Pairs page' />}
+          contentContainerStyle={{ flexGrow: 1 }}
         />
       </View>
     );
