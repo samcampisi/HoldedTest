@@ -3,15 +3,14 @@ import {
   StyleSheet,
   View,
   Text,
-  ActivityIndicator
+  ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as tradingPairsActions from "../actions/tradingPairs.actions";
-import Header from "../components/header";
-import Separator from "../components/separator";
-import FavoriteButton from "../components/favoriteButton";
+import theme from '../styles/theme.style';
 
 class TopMajorGainer extends Component {
   componentDidMount() {
@@ -22,6 +21,12 @@ class TopMajorGainer extends Component {
     this.props.actions.fetchDailyStats();
   }
 
+  renderInfoItem = (label, value) => (
+    <View style={styles.infoItemContainer}>
+      <Text style={styles.text}><Text style={styles.label}>{label}</Text> {value}</Text>
+    </View>
+  )
+
   render() {
     const { topMajorGainer, loading } = this.props;
     const showLoading = loading && !topMajorGainer;
@@ -31,28 +36,28 @@ class TopMajorGainer extends Component {
         {showLoading ? (
           <ActivityIndicator />
         ) : (
-          <View>
+          <ScrollView>
             {Boolean(topMajorGainer) &&
               <View style={styles.infoContainer}>
-                <Text><Text>Symbol:</Text> {topMajorGainer.symbol}</Text>
-                <Text><Text>Price Change:</Text> {topMajorGainer.priceChange}</Text>
-                <Text><Text>Price Change Percent:</Text> {topMajorGainer.priceChange}</Text>
-                <Text><Text>Weighted Average Price:</Text> {topMajorGainer.weightedAvgPrice}</Text>
-                <Text><Text>Previous Close Price:</Text> {topMajorGainer.prevClosePrice}</Text>
-                <Text><Text>Last Price:</Text> {topMajorGainer.lastPrice}</Text>
-                <Text><Text>Last Quantity:</Text> {topMajorGainer.lastQty}</Text>
-                <Text><Text>Bid Price:</Text> {topMajorGainer.bidPrice}</Text>
-                <Text><Text>Bid Quantity:</Text> {topMajorGainer.bidQty}</Text>
-                <Text><Text>Ask Price:</Text> {topMajorGainer.askPrice}</Text>
-                <Text><Text>Ask Quantity:</Text> {topMajorGainer.askQty}</Text>
-                <Text><Text>Open Price:</Text> {topMajorGainer.openPrice}</Text>
-                <Text><Text>High Price:</Text> {topMajorGainer.highPrice}</Text>
-                <Text><Text>Low Price:</Text> {topMajorGainer.lowPrice}</Text>
-                <Text><Text>Volume:</Text> {topMajorGainer.volume}</Text>
-                <Text><Text>Quote Volume:</Text> {topMajorGainer.quoteVolume}</Text>
+                {this.renderInfoItem('Symbol:', topMajorGainer.symbol)}
+                {this.renderInfoItem('Price Change:', topMajorGainer.priceChange)}
+                {this.renderInfoItem('Price Change Percent:', topMajorGainer.priceChangePercent)}
+                {this.renderInfoItem('Weighted Average Price:', topMajorGainer.weightedAvgPrice)}
+                {this.renderInfoItem('Previous Close Price:', topMajorGainer.prevClosePrice)}
+                {this.renderInfoItem('Last Price:', topMajorGainer.lastPrice)}
+                {this.renderInfoItem('Last Quantity:', topMajorGainer.lastQty)}
+                {this.renderInfoItem('Bid Price:', topMajorGainer.bidPrice)}
+                {this.renderInfoItem('Bid Quantity:', topMajorGainer.bidQty)}
+                {this.renderInfoItem('Ask Price:', topMajorGainer.askPrice)}
+                {this.renderInfoItem('Ask Quantity:', topMajorGainer.askQty)}
+                {this.renderInfoItem('Open Price:', topMajorGainer.openPrice)}
+                {this.renderInfoItem('High Price:', topMajorGainer.highPrice)}
+                {this.renderInfoItem('Low Price:', topMajorGainer.lowPrice)}
+                {this.renderInfoItem('Volume:', topMajorGainer.volume)}
+                {this.renderInfoItem('Quote Volume:', topMajorGainer.quoteVolume)}
               </View>
             }
-          </View>
+          </ScrollView>
         )}
       </View>
     );
@@ -64,12 +69,26 @@ const styles = StyleSheet.create({
     flex: 1
   },
   infoContainer: {
-    backgroundColor: '#ff779940',
+    backgroundColor: theme.CONTAINER_SECONDARY_COLOR,
     borderRadius: 10,
     padding: 20,
     margin: 20,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  infoItemContainer: {
+    borderColor: theme.CONTAINER_PRIMARY_COLOR,
+    flex: 1,
+    width: '100%',
+    borderBottomWidth: 1,
+    height: 50,
+    justifyContent: 'center',
+  },
+  text: {
+    fontSize: theme.FONT_SIZE_M,
+  },
+  label: {
+    fontWeight: theme.FONT_WEIGHT_SEMIBOLD,
   },
 });
 
