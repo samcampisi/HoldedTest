@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as tradingPairsActions from "../actions/tradingPairs.actions";
 import theme from '../styles/theme.style';
+import OfflineNotice from "../components/offlineNotice";
 
 class TopMajorGainer extends Component {
   componentDidMount() {
@@ -33,6 +34,7 @@ class TopMajorGainer extends Component {
 
     return (
       <View style={[styles.mainContainer, showLoading && { justifyContent: 'center' }]}>
+        <OfflineNotice />
         {showLoading ? (
           <ActivityIndicator />
         ) : (

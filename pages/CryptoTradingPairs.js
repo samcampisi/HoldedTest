@@ -14,6 +14,7 @@ import * as tradingPairsActions from "../actions/tradingPairs.actions";
 import Header from "../components/header";
 import Separator from "../components/separator";
 import FavoriteButton from "../components/favoriteButton";
+import OfflineNotice from "../components/offlineNotice";
 
 class CryptoTradingPairs extends Component {
   static getDerivedStateFromProps(nextProps, prevState){
@@ -72,6 +73,7 @@ class CryptoTradingPairs extends Component {
     const showLoading = this.props.loading && !this.state.data.length;
     return (
       <View style={[styles.MainContainer, showLoading && { justifyContent: 'center' }]}>
+        <OfflineNotice />
         {showLoading ? (
           <ActivityIndicator />
         ) : (

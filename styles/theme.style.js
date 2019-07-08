@@ -37,4 +37,8 @@ export default {
     OPAQUE_COLOR: '#AAAAAA80',
     BRIGHT_COLOR: '#FFCC00',
   },
+  offline: {
+    BACKGROUND_COLOR: '#b52424',
+    TEXT_COLOR: '#FFFFFF',
+  },
 };
