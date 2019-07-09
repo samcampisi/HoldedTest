@@ -28,6 +28,49 @@ should be able to see the top major gainer of the last 24h. </p>
   <li>So sorry about that. Also I tried asking the maintainer of binance-api-node for help with React Native and he was very rude and told me to just 'google it' (I obviously had).</li>
 </ul>
 
+<h3> Important questions </h3>
+
+<h4> Brief pros and cons about the middleware chosen </h4>
+
+I chose redux-thunk as the middleware for creating the store.
+
+<h5> Pros </h5>
+
+<ul>
+  <li> Thunk lets you write async logic to interact with the store which adapts to my async fetch functions.</li>
+  <li> Since a thunk is a function that may take params and return another function, I can dispatch several actions embedded within another action, which is great for my logic of loading/success/error.</li>
+</ul>
+
+<h5> Cons </h5>
+
+<ul>
+  <li> As opposed to redux-saga, maybe Thunk is not that intuitive and easy to learn and use.</li>
+  <li> Thunks can never act in response to an action. Redux-Saga, on the other hand, subscribes to the store and can trigger a saga (pure function) to run or continue when a certain action is dispatched.</li>
+</ul>
+
+<h4> Explain why your project structure is scalable and its benefits </h4>
+
+Since this is a very small application, right now the project structure containing the main folders:
+
+<ul>
+  <li>Assets</li>
+  <li>Actions</li>
+  <li>Components</li>
+  <li>Pages</li>
+  <li>Reducers</li>
+  <li>Styles</li>
+  <li>Utils</li>
+</ul>
+
+are enough to establish a clear distinction between the files in this project. Whenever a new helper needs to be added, it can go to utils. We could add more granularity to the Pages and Components folders as we need more specificity, such as groups of files serving for a common functionality such as the login flow, the profile views, etc.
+
+As it is this structure allows a reasonable amount of growth without causing too much confusion.
+
+Later on, should we add more views to the hamburger menu, this logic can be moved to a separate file (instead of being inside App.js) to import and configure without much clutter.
+
+<h4> Decisions made about structure and functionality </h4>
+
+The one thing I can say that's not present in the previous point is that I decided separate folders for components and pages because I like a clear distinction between screens and mere re-usable parts. That way I know which pieces I can use in many of my views.
 
 <h3> Download & Installation </h3>
 
