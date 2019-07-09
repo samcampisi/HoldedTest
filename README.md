@@ -81,12 +81,15 @@ The one thing I can say that's not present in the previous point is that I decid
   <li>npm version 6.4 or above</li>
   <li>XCode</li>
   <li>React native client</li>
+  <li>Cocoa Pods</li>
 </ul>
 
 <h4> What to do after cloning this repo</h4>
 
 ```shell
 $ npm install
+
+$ cd ios && pod install && cd ..
 ```
 
 And then open the project on XCode and run it on an emulator or an actual device.
